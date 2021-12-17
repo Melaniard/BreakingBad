@@ -104,7 +104,7 @@ donde el nombre sea el elemento que estamos mapeando y la guardamos dentro de nu
 router.get('/occupations', async (req, res) => {
     const { data } = await axios.get('https://breakingbadapi.com/api/characters')
     const occupations = data.map(e => e.occupation)
-    const dbOccupation = occupations.flat()
+    const dbOccupation = occupations.flat() // El método flat() crea una nueva matriz con todos los elementos de sub-array concatenados recursivamente hasta la profundidad especificada.
     dbOccupation.forEach(e => {
         Occupation.findOrCreate({
             where: {
