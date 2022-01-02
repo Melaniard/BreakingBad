@@ -18,7 +18,7 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 characters: action.payload
             };
-        case 'GET_DETAILS':
+        case 'GET_DETAIL':
             return {
                 ...state,
                 details: action.payload

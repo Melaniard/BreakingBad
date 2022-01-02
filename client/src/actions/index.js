@@ -27,13 +27,13 @@ export function getByName(name) {
 };
 
 // Para la busqueda por ID:
-export function getDetails(id) {
+export function getDetail(id) {
     return async function(dispatch) {
         try {
-            const res = await axios.get(`http://localhost:3001/characters/${id}`);
+            const json = await axios.get(`http://localhost:3001/characters/${id}`);
             return dispatch({
-                type: 'GET_DETAILS',
-                payload: res.data
+                type: 'GET_DETAIL',
+                payload: json.data
             });
         } catch (err) {
             console.log(err)

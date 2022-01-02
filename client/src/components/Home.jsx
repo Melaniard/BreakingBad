@@ -97,7 +97,7 @@ export default function Home() {
             {
                 currentCharacters?.map((c) => {
                     return (
-                        <fragment className='card'>
+                        <Fragment className='card'>
                             <Link to={'/home/' + c.id}>
                                 <Card
                                     name={c.name}
@@ -106,7 +106,7 @@ export default function Home() {
                                     key={c.id}
                                 />
                             </Link>
-                        </fragment>
+                        </Fragment>
                     );
                 })
             };

@@ -3,11 +3,28 @@ import { Link, useHistory } from 'react-router-dom';
 import { postCharacter, getOccupations } from '../actions';
 import { useDispatch, useSelector } from 'react-redux';
 
+function validateState(input) {
+    let errors = {};
+    if (!input.name) {
+        errors.name = 'Name is required';
+    } else if (!input.nickname) {
+        errors.nickname = 'Nickname is required';
+    } else if (!input.birthday) {
+        errors.birthday = 'Birthday is required';
+    } else if (!input.status) {
+        errors.status = 'Status is required';
+    } else if (!input.occupation) {
+        errors.occupation = 'Occupation is required';
+    }
+    return errors;
+}
+
 export default function CharacterCreate() {
 
     const dispatch = useDispatch();
     const history = useHistory();
     const occupations = useSelector((state) => state.occupations);
+    const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
         name: '',
         nickname: '',
@@ -22,6 +39,10 @@ export default function CharacterCreate() {
             ...input,
             [e.target.name]: e.target.value
         });
+        setErrors(validateState({
+            ...input,
+            [e.target.name]: e.target.value
+        }));
     }; 
     // Maneja la seleccion del checkbox de Status:
     function handleCheck(e) {
@@ -58,6 +79,13 @@ export default function CharacterCreate() {
         history.push('/home')
     };
 
+    function handleDelete(el){
+        setInput({
+            ...input,
+            occupation: input.occupation.filter(occ => occ !== el)
+        });
+    };
+
     useEffect(() => {
         dispatch(getOccupations());
     }, [dispatch])
@@ -77,6 +105,9 @@ export default function CharacterCreate() {
                         name='name'
                         onChange={e => handleChange(e)}
                     />
+                    {
+                        errors.name && ( <p className='error'>{errors.name}</p> )
+                    }
                 </div>
                 <div>
                     <label>Nickname:</label>
@@ -86,6 +117,9 @@ export default function CharacterCreate() {
                         name='nickname'
                         onChange={e => handleChange(e)}
                     />
+                    {
+                        errors.nickname && ( <p className='error'>{errors.nickname}</p> )
+                    }
                 </div>
                 <div>
                     <label>Birthday:</label>
@@ -95,6 +129,9 @@ export default function CharacterCreate() {
                         name='birthday'
                         onChange={e => handleChange(e)}
                     />
+                    {
+                        errors.birthday && ( <p className='error'>{errors.birthday}</p> )
+                    }
                 </div>
                 <div>
                     <label>Image:</label>
@@ -115,9 +152,7 @@ export default function CharacterCreate() {
                             onChange={e => handleCheck(e)}
                         />
                         Alive
-                    </label>
-                </div>
-                <div>
+                    </label>              
                     <label>
                         <input
                             type='checkbox'
@@ -127,8 +162,6 @@ export default function CharacterCreate() {
                         />
                         Deceased
                     </label>
-                </div>
-                <div>
                     <label>
                         <input
                             type='checkbox'
@@ -145,12 +178,20 @@ export default function CharacterCreate() {
                             <option value={occ.name}>{occ.name}</option>
                         ))
                     }
-                    <ul>
-                        <li>{input.occupation.map(o => o + "| ")}</li>
-                    </ul>
                 </select>
+                <ul>
+                    <li>{input.occupation.map(o => o + " | ")}</li>
+                </ul>
                 <button type='submit'>Character Created</button>
             </form>
+            {
+                input.occupation.map(el => 
+                <div className='divOcc'>
+                    <p>{el}</p>
+                    <button className='buttonX' onclick={()=> handleDelete(el)}>x</button>
+                </div>
+                )
+            }
         </div>
     );
 };
