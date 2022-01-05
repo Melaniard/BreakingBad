@@ -186,10 +186,10 @@ export default function CharacterCreate() {
             </form>
             {
                 input.occupation.map(el => 
-                <div className='divOcc'>
+                 <div className='divOcc'>
                     <p>{el}</p>
                     <button className='buttonX' onclick={()=> handleDelete(el)}>x</button>
-                </div>
+                 </div>
                 )
             }
         </div>
